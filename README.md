@@ -12,4 +12,4 @@ ResearchOS is an AI-powered research operating system that helps users organize 
 
 ## Status
 
-🚧 Under Development
+🚧 Under Developmentgg
