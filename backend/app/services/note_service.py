@@ -3,8 +3,17 @@ from sqlalchemy.orm import Session
 from app.models.note import Note
 
 
-def get_all_notes(db: Session):
-    return db.query(Note).all()
+def get_all_notes(
+    db: Session,
+    page: int = 1,
+    limit: int = 10,
+):
+    return (
+        db.query(Note)
+        .offset((page - 1) * limit)
+        .limit(limit)
+        .all()
+    )
 
 
 def create_note(db: Session, note):
@@ -45,3 +54,13 @@ def delete_note(db: Session, note_id: int):
     db.commit()
 
     return True
+
+def search_notes(db: Session, query: str):
+    return (
+        db.query(Note)
+        .filter(
+            (Note.title.ilike(f"%{query}%")) |
+            (Note.content.ilike(f"%{query}%"))
+        )
+        .all()
+    )
