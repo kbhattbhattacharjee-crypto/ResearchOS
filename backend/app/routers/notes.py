@@ -1,6 +1,8 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 
-from app.schemas.note import Note
+from app.core.database import get_db
+from app.schemas.note import NoteCreate, NoteResponse
 from app.services.note_service import (
     get_all_notes,
     create_note,
@@ -8,42 +10,41 @@ from app.services.note_service import (
     delete_note,
 )
 
-router = APIRouter()
+router = APIRouter(prefix="/notes", tags=["Notes"])
 
 
-@router.get("/notes")
-def get_notes():
-    return get_all_notes()
+@router.get("/", response_model=list[NoteResponse])
+def read_notes(db: Session = Depends(get_db)):
+    return get_all_notes(db)
 
 
-@router.post("/notes")
-def add_note(note: Note):
-    return create_note(note)
+@router.post("/", response_model=NoteResponse)
+def add_note(note: NoteCreate, db: Session = Depends(get_db)):
+    return create_note(db, note)
 
 
-@router.put("/notes/{note_id}")
-def edit_note(note_id: int, note: Note):
-
-    updated = update_note(note_id, note)
+@router.put("/{note_id}", response_model=NoteResponse)
+def edit_note(
+    note_id: int,
+    note: NoteCreate,
+    db: Session = Depends(get_db),
+):
+    updated = update_note(db, note_id, note)
 
     if updated is None:
-        return {
-            "error": "Note not found"
-        }
+        return {"error": "Note not found"}
 
     return updated
 
 
-@router.delete("/notes/{note_id}")
-def remove_note(note_id: int):
-
-    deleted = delete_note(note_id)
+@router.delete("/{note_id}")
+def remove_note(
+    note_id: int,
+    db: Session = Depends(get_db),
+):
+    deleted = delete_note(db, note_id)
 
     if not deleted:
-        return {
-            "error": "Note not found"
-        }
+        return {"error": "Note not found"}
 
-    return {
-        "message": "Note deleted successfully"
-    }
+    return {"message": "Note deleted successfully"}
