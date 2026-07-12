@@ -9,10 +9,18 @@ from app.services.note_service import (
     update_note,
     delete_note,
     search_notes,
+    get_note_statistics,
 )
-
 router = APIRouter(prefix="/notes", tags=["Notes"])
 
+@router.get(
+    "/stats",
+    summary="Notes statistics",
+)
+def note_statistics(
+    db: Session = Depends(get_db),
+):
+    return get_note_statistics(db)
 
 @router.get(
     "/",

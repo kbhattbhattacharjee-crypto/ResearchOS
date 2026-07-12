@@ -1,4 +1,5 @@
 from sqlalchemy.orm import Session
+from sqlalchemy import func
 
 from app.models.note import Note
 
@@ -37,8 +38,16 @@ def create_note(db: Session, note):
     return new_note
 
 
-def update_note(db: Session, note_id: int, updated_note):
-    note = db.query(Note).filter(Note.id == note_id).first()
+def update_note(
+    db: Session,
+    note_id: int,
+    updated_note,
+):
+    note = (
+        db.query(Note)
+        .filter(Note.id == note_id)
+        .first()
+    )
 
     if note is None:
         return None
@@ -52,8 +61,15 @@ def update_note(db: Session, note_id: int, updated_note):
     return note
 
 
-def delete_note(db: Session, note_id: int):
-    note = db.query(Note).filter(Note.id == note_id).first()
+def delete_note(
+    db: Session,
+    note_id: int,
+):
+    note = (
+        db.query(Note)
+        .filter(Note.id == note_id)
+        .first()
+    )
 
     if note is None:
         return False
@@ -63,7 +79,11 @@ def delete_note(db: Session, note_id: int):
 
     return True
 
-def search_notes(db: Session, query: str):
+
+def search_notes(
+    db: Session,
+    query: str,
+):
     return (
         db.query(Note)
         .filter(
@@ -72,3 +92,20 @@ def search_notes(db: Session, query: str):
         )
         .all()
     )
+
+
+def get_note_statistics(db: Session):
+    total_notes = db.query(func.count(Note.id)).scalar()
+
+    total_characters = (
+        db.query(func.sum(func.length(Note.content)))
+        .scalar()
+    )
+
+    if total_characters is None:
+        total_characters = 0
+
+    return {
+        "total_notes": total_notes,
+        "total_characters": total_characters,
+    }
