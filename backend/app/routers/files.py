@@ -14,6 +14,7 @@ from app.services.document_service import (
     get_all_documents,
     search_documents,
     delete_document,
+    get_document_statistics,
 )
 
 
@@ -93,3 +94,9 @@ def remove_document(
     return {
         "message": "Document deleted successfully"
     }
+    
+@router.get("/stats")
+def document_statistics(
+    db: Session = Depends(get_db),
+):
+    return get_document_statistics(db)

@@ -56,3 +56,29 @@ def delete_document(
     db.commit()
 
     return True
+
+def get_document_statistics(db: Session):
+
+    total_documents = (
+        db.query(Document)
+        .count()
+    )
+
+    total_characters = (
+        db.query(Document)
+        .with_entities(
+            Document.content
+        )
+        .all()
+    )
+
+    characters = sum(
+        len(item[0])
+        for item in total_characters
+        if item[0]
+    )
+
+    return {
+        "total_documents": total_documents,
+        "total_characters": characters,
+    }
