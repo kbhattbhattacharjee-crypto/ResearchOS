@@ -6,6 +6,7 @@ from app.routers.health import router as health_router
 from app.routers.notes import router as notes_router
 from app.routers.files import router as files_router
 
+
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(

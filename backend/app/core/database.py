@@ -17,6 +17,12 @@ SessionLocal = sessionmaker(
 
 Base = declarative_base()
 
+# Import all models before creating tables
+from app.models.note import Note
+from app.models.document import Document
+
+Base.metadata.create_all(bind=engine)
+
 
 def get_db():
     db = SessionLocal()
