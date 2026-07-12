@@ -22,12 +22,14 @@ router = APIRouter(prefix="/notes", tags=["Notes"])
 def read_notes(
     page: int = 1,
     limit: int = 10,
+    sort: str = "newest",
     db: Session = Depends(get_db),
 ):
     return get_all_notes(
         db=db,
         page=page,
         limit=limit,
+        sort=sort,
     )
 
 

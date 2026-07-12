@@ -7,9 +7,17 @@ def get_all_notes(
     db: Session,
     page: int = 1,
     limit: int = 10,
+    sort: str = "newest",
 ):
+    query = db.query(Note)
+
+    if sort == "oldest":
+        query = query.order_by(Note.id.asc())
+    else:
+        query = query.order_by(Note.id.desc())
+
     return (
-        db.query(Note)
+        query
         .offset((page - 1) * limit)
         .limit(limit)
         .all()
