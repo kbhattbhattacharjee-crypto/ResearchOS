@@ -12,4 +12,4 @@ class Document(Base):
 
     filepath = Column(String, nullable=False)
 
-    content = Column(String, nullable=False)
+    extracted_text = Column(String, nullable=False)

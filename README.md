@@ -13,3 +13,15 @@ ResearchOS is an AI-powered research operating system that helps users organize 
 ## Status
 
 🚧 Under Developmentgg
+
+
+ Available at your primary URL https://researchos-6yrh.onrender.com
+
+
+ workflow:
+ 
+cd ~/Developer/ResearchOS/backend
+
+source .venv/bin/activate
+
+uvicorn app.main:app --reload

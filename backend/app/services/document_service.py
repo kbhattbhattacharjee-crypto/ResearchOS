@@ -7,12 +7,12 @@ def save_document(
     db: Session,
     filename: str,
     filepath: str,
-    content: str,
+    extracted_text: str,
 ):
     document = Document(
         filename=filename,
         filepath=filepath,
-        content=content,
+        extracted_text=extracted_text,
     )
 
     db.add(document)
@@ -34,11 +34,12 @@ def search_documents(
         db.query(Document)
         .filter(
             (Document.filename.ilike(f"%{query}%")) |
-            (Document.content.ilike(f"%{query}%"))
+            (Document.extracted_text.ilike(f"%{query}%"))
         )
         .all()
     )
-    
+
+
 def delete_document(
     db: Session,
     document_id: int,
@@ -57,28 +58,19 @@ def delete_document(
 
     return True
 
+
 def get_document_statistics(db: Session):
 
-    total_documents = (
-        db.query(Document)
-        .count()
-    )
+    documents = db.query(Document).all()
 
-    total_characters = (
-        db.query(Document)
-        .with_entities(
-            Document.content
-        )
-        .all()
-    )
+    total_documents = len(documents)
 
-    characters = sum(
-        len(item[0])
-        for item in total_characters
-        if item[0]
+    total_characters = sum(
+        len(doc.extracted_text or "")
+        for doc in documents
     )
 
     return {
         "total_documents": total_documents,
-        "total_characters": characters,
+        "total_characters": total_characters,
     }

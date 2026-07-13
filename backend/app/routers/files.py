@@ -1,14 +1,11 @@
 from pathlib import Path
 import shutil
 
-from fastapi import APIRouter, UploadFile, File
-
-from app.utils.pdf import extract_text_from_pdf
-
+from fastapi import APIRouter, UploadFile, File, Depends, HTTPException
 from sqlalchemy.orm import Session
-from fastapi import Depends
 
 from app.core.database import get_db
+from app.utils.pdf import extract_text_from_pdf
 from app.services.document_service import (
     save_document,
     get_all_documents,
@@ -16,7 +13,6 @@ from app.services.document_service import (
     delete_document,
     get_document_statistics,
 )
-
 
 router = APIRouter(
     prefix="/files",
@@ -46,21 +42,23 @@ async def upload_file(
         db=db,
         filename=file.filename,
         filepath=str(destination),
-        content=text,
+        extracted_text=text,
     )
 
     return {
         "id": document.id,
         "filename": document.filename,
-        "characters": len(document.content),
-        "preview": document.content[:500],
+        "characters": len(document.extracted_text),
+        "preview": document.extracted_text[:500],
     }
-    
+
+
 @router.get("/documents")
 def list_documents(
     db: Session = Depends(get_db),
 ):
     return get_all_documents(db)
+
 
 @router.get("/search")
 def search(
@@ -71,8 +69,6 @@ def search(
         db=db,
         query=query,
     )
-    
-from fastapi import HTTPException
 
 
 @router.delete("/{document_id}")
@@ -94,7 +90,8 @@ def remove_document(
     return {
         "message": "Document deleted successfully"
     }
-    
+
+
 @router.get("/stats")
 def document_statistics(
     db: Session = Depends(get_db),
