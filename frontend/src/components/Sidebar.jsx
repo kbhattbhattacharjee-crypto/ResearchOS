@@ -1,50 +1,57 @@
-import { useEffect, useState } from "react";
-import api from "../services/api";
+import { useState } from "react";
+import DocumentCard from "./DocumentCard";
+import useDocuments from "../hooks/useDocuments";
 
-function Sidebar() {
+export default function Sidebar() {
 
-    const [documents, setDocuments] = useState([]);
+    const { documents } = useDocuments();
 
-    useEffect(() => {
+    const [search, setSearch] = useState("");
 
-        loadDocuments();
+    const filtered = documents.filter((doc) =>
 
-    }, []);
+        doc.filename
+            .toLowerCase()
+            .includes(search.toLowerCase())
 
-    async function loadDocuments() {
-
-        const response = await api.get(
-            "/files/documents"
-        );
-
-        setDocuments(response.data);
-
-    }
+    );
 
     return (
 
-        <div className="card">
+        <div className="sidebar">
 
             <h2>Documents</h2>
 
-            <ul>
+            <input
 
-                {documents.map((doc) => (
+                className="search"
 
-                    <li key={doc.id}>
+                placeholder="Search documents..."
 
-                        {doc.filename}
+                value={search}
 
-                    </li>
+                onChange={(e)=>setSearch(e.target.value)}
 
-                ))}
+            />
 
-            </ul>
+            {
+
+                filtered.map((doc)=>(
+
+                    <DocumentCard
+
+                        key={doc.id}
+
+                        document={doc}
+
+                    />
+
+                ))
+
+            }
 
         </div>
 
     );
 
 }
-
-export default Sidebar;

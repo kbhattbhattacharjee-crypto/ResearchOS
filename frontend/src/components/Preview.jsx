@@ -1,25 +1,65 @@
-function Preview({ preview }) {
+export default function Preview({
+
+    preview,
+
+}) {
 
     return (
 
-        <div className="card">
+        <div className="results">
 
-            <h2>Document Preview</h2>
+            <h2>
 
-            <textarea
+                📄 Document Preview
 
-                rows="20"
+            </h2>
 
-                value={preview}
+            {
 
-                readOnly
+                preview
 
-            />
+                ?
+
+                (
+
+                    <textarea
+
+                        rows="20"
+
+                        value={preview}
+
+                        readOnly
+
+                    />
+
+                )
+
+                :
+
+                (
+
+                    <div className="empty-preview">
+
+                        <h3>
+
+                            No document selected
+
+                        </h3>
+
+                        <p>
+
+                            Upload a PDF to begin.
+
+                        </p>
+
+                    </div>
+
+                )
+
+            }
 
         </div>
 
     );
 
 }
-
-export default Preview;
