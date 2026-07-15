@@ -8,12 +8,36 @@ export default function useStats() {
         total_characters: 0,
     });
 
+    const loadStats = async () => {
+
+        try {
+
+            const response = await api.get("/files/stats");
+
+            setStats(response.data);
+
+        }
+
+        catch (error) {
+
+            console.log(error);
+
+        }
+
+    };
+
     useEffect(() => {
 
-        api.get("/files/stats")
-            .then((res) => setStats(res.data));
+        loadStats();
 
     }, []);
 
-    return stats;
+    return {
+
+        stats,
+
+        loadStats,
+
+    };
+
 }

@@ -13,6 +13,7 @@ from app.services.document_service import (
     delete_document,
     get_document_statistics,
 )
+from app.nlp.document_analyzer import analyze_document
 
 router = APIRouter(
     prefix="/files",
@@ -35,24 +36,39 @@ async def upload_file(
 
     text = ""
 
-    if file.filename.lower().endswith(".pdf"):
+    if file.filename.lower().endswith(".pdf"):    
         text = extract_text_from_pdf(str(destination))
+    
+    analysis = analyze_document(text)
 
     document = save_document(
-        db=db,
-        filename=file.filename,
-        filepath=str(destination),
-        extracted_text=text,
-    )
+            db=db,
+            filename=file.filename,
+            filepath=str(destination),
+            extracted_text=text,
+            summary=analysis["summary"],
+            keywords=", ".join(analysis["keywords"]),
+            reading_time=analysis["reading_time"],
+            word_count=analysis["word_count"],
+            character_count=analysis["character_count"],
+        )
 
     return {
         "id": document.id,
         "filename": document.filename,
+    
         "preview": document.extracted_text[:1000],
-        "characters": len(document.extracted_text),
-        "words": len(document.extracted_text.split()),
+    
+        "summary": document.summary,
+    
+        "keywords": document.keywords,
+    
+        "word_count": document.word_count,
+    
+        "character_count": document.character_count,
+    
+        "reading_time": document.reading_time,
     }
-
 
 @router.get("/documents")
 def list_documents(

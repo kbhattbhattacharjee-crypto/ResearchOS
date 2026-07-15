@@ -9,10 +9,12 @@ export default function UploadBox({
     setFile,
 
     setPreview,
-    
+
     setMetadata,
 
     refreshDocuments,
+
+    refreshStats,
 
 }) {
 
@@ -27,48 +29,56 @@ export default function UploadBox({
         const formData = new FormData();
 
         formData.append(
-
             "file",
-
             file
-
         );
 
         try {
 
             const response = await api.post(
-
                 "/files/upload",
-
                 formData
-
             );
 
             setPreview(response.data.preview);
 
             setMetadata({
+
                 filename: response.data.filename,
-                characters: response.data.characters,
-                words: response.data.words,
+
+                summary: response.data.summary,
+
+                keywords: response.data.keywords,
+
+                word_count: response.data.word_count,
+
+                character_count: response.data.character_count,
+
+                reading_time: response.data.reading_time,
+
             });
-            
-            refreshDocuments();
 
-            alert(
+            if (refreshDocuments) {
 
-                "PDF uploaded successfully."
+                await refreshDocuments();
 
-            );
+            }
 
-            // refreshDocuments();
+            if (refreshStats) {
 
-            // setFile(null);
+                await refreshStats();
+
+            }
+
+            setFile(null);
+
+            alert("PDF uploaded successfully.");
 
         }
 
         catch (error) {
 
-            console.log(error);
+            console.error(error);
 
             alert("Upload failed.");
 
@@ -86,11 +96,7 @@ export default function UploadBox({
 
         <div className="card upload-card">
 
-            <h2>
-
-                Upload Research Paper
-
-            </h2>
+            <h2>Upload Research Paper</h2>
 
             <input
 
@@ -98,13 +104,9 @@ export default function UploadBox({
 
                 accept=".pdf"
 
-                onChange={(e)=>
+                onChange={(e) =>
 
-                    setFile(
-
-                        e.target.files[0]
-
-                    )
+                    setFile(e.target.files[0])
 
                 }
 
@@ -122,13 +124,9 @@ export default function UploadBox({
 
                     uploading
 
-                    ?
+                        ? "Uploading..."
 
-                    "Uploading..."
-
-                    :
-
-                    "Upload PDF"
+                        : "Upload PDF"
 
                 }
 

@@ -8,11 +8,21 @@ def save_document(
     filename: str,
     filepath: str,
     extracted_text: str,
+    summary: str,
+    keywords: str,
+    reading_time: int,
+    word_count: int,
+    character_count: int,
 ):
     document = Document(
         filename=filename,
         filepath=filepath,
         extracted_text=extracted_text,
+        summary=summary,
+        keywords=keywords,
+        reading_time=reading_time,
+        word_count=word_count,
+        character_count=character_count,
     )
 
     db.add(document)
@@ -63,14 +73,9 @@ def get_document_statistics(db: Session):
 
     documents = db.query(Document).all()
 
-    total_documents = len(documents)
-
-    total_characters = sum(
-        len(doc.extracted_text or "")
-        for doc in documents
-    )
-
     return {
-        "total_documents": total_documents,
-        "total_characters": total_characters,
+        "total_documents": len(documents),
+        "total_characters": sum(doc.character_count for doc in documents),
+        "total_words": sum(doc.word_count for doc in documents),
+        "total_reading_time": sum(doc.reading_time for doc in documents),
     }

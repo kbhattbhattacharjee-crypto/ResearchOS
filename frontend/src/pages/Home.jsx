@@ -13,7 +13,10 @@ import useDocuments from "../hooks/useDocuments";
 
 export default function Home() {
 
-    const stats = useStats();
+    const {
+        stats,
+        loadStats,
+    } = useStats();
 
     const {
         documents,
@@ -24,34 +27,32 @@ export default function Home() {
 
     const [metadata, setMetadata] = useState({
         filename: "",
-        characters: 0,
-        words: 0,
+        summary: "",
+        keywords: "",
+        word_count: 0,
+        character_count: 0,
+        reading_time: 0,
     });
 
     const [file, setFile] = useState(null);
 
     return (
-
         <>
-
             <Navbar />
 
             <div className="dashboard">
 
                 <aside className="sidebar-panel">
-
                     <Sidebar
                         documents={documents}
                         setPreview={setPreview}
                         refreshDocuments={loadDocuments}
                     />
-
                 </aside>
 
                 <main className="main-panel">
 
                     <div className="hero-card">
-
                         <h1>
                             Build Your Research Brain
                         </h1>
@@ -62,7 +63,6 @@ export default function Home() {
                             Organize ideas.
                             Prepare for AI-powered discovery.
                         </p>
-
                     </div>
 
                     <Stats
@@ -81,6 +81,7 @@ export default function Home() {
                         setPreview={setPreview}
                         setMetadata={setMetadata}
                         refreshDocuments={loadDocuments}
+                        refreshStats={loadStats}
                     />
 
                     <Preview
@@ -90,9 +91,6 @@ export default function Home() {
                 </main>
 
             </div>
-
         </>
-
     );
-
 }

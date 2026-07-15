@@ -13,3 +13,13 @@ class Document(Base):
     filepath = Column(String, nullable=False)
 
     extracted_text = Column(String, nullable=False)
+
+    summary = Column(String, default="")
+
+    keywords = Column(String, default="")
+
+    reading_time = Column(Integer, default=0)
+
+    word_count = Column(Integer, default=0)
+
+    character_count = Column(Integer, default=0)

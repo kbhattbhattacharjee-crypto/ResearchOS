@@ -1,25 +1,42 @@
 export default function ResearchCard({ metadata }) {
 
-    const readingTime = Math.max(
-        1,
-        Math.ceil(metadata.words / 200)
-    );
-
     return (
 
         <div className="card">
 
-            <h2>Research Card</h2>
+            <h2>Research Intelligence</h2>
 
-            <p><strong>Document</strong><br />{metadata.filename || "No document uploaded"}</p>
+            <hr />
 
-            <p><strong>Characters</strong><br />{metadata.characters}</p>
+            <p>
+                <strong>📄 Document</strong>
+                <br />
+                {metadata.filename || "No document uploaded"}
+            </p>
 
-            <p><strong>Words</strong><br />{metadata.words}</p>
+            <p>
+                <strong>📝 Summary</strong>
+                <br />
+                {metadata.summary || "Waiting for upload..."}
+            </p>
 
-            <p><strong>Reading Time</strong><br />{readingTime} min</p>
+            <p>
+                <strong>🏷 Keywords</strong>
+                <br />
+                {metadata.keywords || "-"}
+            </p>
 
-            <p><strong>Status</strong><br />Indexed ✓</p>
+            <p>
+                <strong>📚 Words</strong>
+                <br />
+                {metadata.word_count || 0}
+            </p>
+
+            <p>
+                <strong>⏱ Reading Time</strong>
+                <br />
+                {metadata.reading_time || 0} min
+            </p>
 
         </div>
 
