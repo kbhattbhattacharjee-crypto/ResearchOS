@@ -1,4 +1,4 @@
-function Navbar() {
+export default function Navbar() {
 
     return (
 
@@ -6,25 +6,23 @@ function Navbar() {
 
             <div>
 
-                <h1 className="logo">
+                <h1>
 
-                    🚀 ResearchOS
+                    ResearchOS
 
                 </h1>
 
-                <p className="tagline">
+                <p>
 
-                    AI-Powered Research Operating System
+                    AI-powered workspace for reading, organizing and understanding research papers.
 
                 </p>
 
             </div>
 
-            <div className="status">
+            <div className="badge">
 
-                <span className="status-dot"></span>
-
-                Backend Online
+                Version 1.0
 
             </div>
 
@@ -33,5 +31,3 @@ function Navbar() {
     );
 
 }
-
-export default Navbar;

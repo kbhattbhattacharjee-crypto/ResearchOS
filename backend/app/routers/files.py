@@ -48,8 +48,9 @@ async def upload_file(
     return {
         "id": document.id,
         "filename": document.filename,
+        "preview": document.extracted_text[:1000],
         "characters": len(document.extracted_text),
-        "preview": document.extracted_text[:500],
+        "words": len(document.extracted_text.split()),
     }
 
 
@@ -57,7 +58,20 @@ async def upload_file(
 def list_documents(
     db: Session = Depends(get_db),
 ):
-    return get_all_documents(db)
+    documents = get_all_documents(db)
+
+    return [
+
+        {
+            "id": doc.id,
+            "filename": doc.filename,
+            "preview": doc.extracted_text[:400],
+            "characters": len(doc.extracted_text),
+        }
+
+        for doc in documents
+
+    ]
 
 
 @router.get("/search")

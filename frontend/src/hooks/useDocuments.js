@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
+
 import api from "../services/api";
 
 export default function useDocuments() {
 
     const [documents, setDocuments] = useState([]);
 
-    async function loadDocuments() {
+    const loadDocuments = async () => {
 
-        const res = await api.get("/files/documents");
+        const response = await api.get(
+            "/files/documents"
+        );
 
-        setDocuments(res.data);
+        setDocuments(response.data);
 
-    }
+    };
 
     useEffect(() => {
 

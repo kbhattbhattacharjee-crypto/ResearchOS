@@ -9,20 +9,30 @@ export default function UploadBox({
     setFile,
 
     setPreview,
+    
+    setMetadata,
+
+    refreshDocuments,
 
 }) {
 
-    const [loading, setLoading] = useState(false);
+    const [uploading, setUploading] = useState(false);
 
     const uploadPDF = async () => {
 
         if (!file) return;
 
-        setLoading(true);
+        setUploading(true);
 
         const formData = new FormData();
 
-        formData.append("file", file);
+        formData.append(
+
+            "file",
+
+            file
+
+        );
 
         try {
 
@@ -36,31 +46,51 @@ export default function UploadBox({
 
             setPreview(response.data.preview);
 
-        } catch (err) {
+            setMetadata({
+                filename: response.data.filename,
+                characters: response.data.characters,
+                words: response.data.words,
+            });
+            
+            refreshDocuments();
 
-            alert("Upload failed.");
+            alert(
 
-            console.error(err);
+                "PDF uploaded successfully."
+
+            );
+
+            // refreshDocuments();
+
+            // setFile(null);
 
         }
 
-        setLoading(false);
+        catch (error) {
+
+            console.log(error);
+
+            alert("Upload failed.");
+
+        }
+
+        finally {
+
+            setUploading(false);
+
+        }
 
     };
 
     return (
 
-        <div className="upload-card">
+        <div className="card upload-card">
 
-            <h2>Upload Research Paper</h2>
+            <h2>
 
-            <p>
+                Upload Research Paper
 
-                Select a PDF and ResearchOS will
-
-                extract its text automatically.
-
-            </p>
+            </h2>
 
             <input
 
@@ -70,7 +100,11 @@ export default function UploadBox({
 
                 onChange={(e)=>
 
-                    setFile(e.target.files[0])
+                    setFile(
+
+                        e.target.files[0]
+
+                    )
 
                 }
 
@@ -80,11 +114,13 @@ export default function UploadBox({
 
                 onClick={uploadPDF}
 
+                disabled={uploading}
+
             >
 
                 {
 
-                    loading
+                    uploading
 
                     ?
 

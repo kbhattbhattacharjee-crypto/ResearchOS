@@ -1,18 +1,32 @@
 import { useState } from "react";
+
 import DocumentCard from "./DocumentCard";
-import useDocuments from "../hooks/useDocuments";
 
-export default function Sidebar() {
+export default function Sidebar({
 
-    const { documents } = useDocuments();
+    documents,
+
+    setPreview,
+
+    refreshDocuments,
+
+}) {
 
     const [search, setSearch] = useState("");
 
-    const filtered = documents.filter((doc) =>
+    const filtered = documents.filter(
 
-        doc.filename
-            .toLowerCase()
-            .includes(search.toLowerCase())
+        (doc)=>
+
+            doc.filename
+
+                .toLowerCase()
+
+                .includes(
+
+                    search.toLowerCase()
+
+                )
 
     );
 
@@ -20,13 +34,17 @@ export default function Sidebar() {
 
         <div className="sidebar">
 
-            <h2>Documents</h2>
+            <h2>
+
+                Documents
+
+            </h2>
 
             <input
 
                 className="search"
 
-                placeholder="Search documents..."
+                placeholder="Search..."
 
                 value={search}
 
@@ -36,17 +54,43 @@ export default function Sidebar() {
 
             {
 
-                filtered.map((doc)=>(
+                filtered.length===0 ?
 
-                    <DocumentCard
+                (
 
-                        key={doc.id}
+                    <p>
 
-                        document={doc}
+                        No documents yet.
 
-                    />
+                    </p>
 
-                ))
+                )
+
+                :
+
+                (
+
+                    filtered.map(
+
+                        doc=>(
+
+                            <DocumentCard
+
+                                key={doc.id}
+
+                                document={doc}
+
+                                refreshDocuments={refreshDocuments}
+
+                                onClick={()=>setPreview(doc.preview)}
+
+                            />
+
+                        )
+
+                    )
+
+                )
 
             }
 
