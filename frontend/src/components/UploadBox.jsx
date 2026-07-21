@@ -20,11 +20,15 @@ export default function UploadBox({
 
     const [uploading, setUploading] = useState(false);
 
+    const [message, setMessage] = useState("");
+
     const uploadPDF = async () => {
 
         if (!file) return;
 
         setUploading(true);
+
+        setMessage("");
 
         const formData = new FormData();
 
@@ -70,9 +74,9 @@ export default function UploadBox({
 
             }
 
-            setFile(null);
+            setMessage("✅ PDF uploaded successfully");
 
-            alert("PDF uploaded successfully.");
+            setFile(null);
 
         }
 
@@ -80,7 +84,7 @@ export default function UploadBox({
 
             console.error(error);
 
-            alert("Upload failed.");
+            setMessage("❌ Upload failed");
 
         }
 
@@ -112,6 +116,18 @@ export default function UploadBox({
 
             />
 
+            {
+
+                file &&
+
+                <p>
+
+                    <strong>Selected:</strong> {file.name}
+
+                </p>
+
+            }
+
             <button
 
                 onClick={uploadPDF}
@@ -131,6 +147,18 @@ export default function UploadBox({
                 }
 
             </button>
+
+            {
+
+                message &&
+
+                <div className="upload-message">
+
+                    {message}
+
+                </div>
+
+            }
 
         </div>
 

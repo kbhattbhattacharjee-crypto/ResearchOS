@@ -14,19 +14,17 @@ export default function Sidebar({
 
     const [search, setSearch] = useState("");
 
-    const filtered = documents.filter(
+    const filtered = documents.filter((doc) =>
 
-        (doc)=>
+        doc.filename
 
-            doc.filename
+            .toLowerCase()
 
-                .toLowerCase()
+            .includes(
 
-                .includes(
+                search.toLowerCase()
 
-                    search.toLowerCase()
-
-                )
+            )
 
     );
 
@@ -36,7 +34,7 @@ export default function Sidebar({
 
             <h2>
 
-                Documents
+                Research Library
 
             </h2>
 
@@ -44,53 +42,56 @@ export default function Sidebar({
 
                 className="search"
 
-                placeholder="Search..."
+                placeholder="Search papers..."
 
                 value={search}
 
-                onChange={(e)=>setSearch(e.target.value)}
+                onChange={(e)=>
+
+                    setSearch(e.target.value)
+
+                }
 
             />
 
             {
 
-                filtered.length===0 ?
+                filtered.length === 0
 
-                (
+                ?
 
-                    <p>
+                <div className="empty-state">
 
-                        No documents yet.
+                    📂
 
-                    </p>
+                    <br /><br />
 
-                )
+                    No research papers yet.
+
+                    <br />
+
+                    Upload your first PDF.
+
+                </div>
 
                 :
 
-                (
+                filtered.map((doc)=>(
 
-                    filtered.map(
+                    <DocumentCard
 
-                        doc=>(
+                        key={doc.id}
 
-                            <DocumentCard
+                        document={doc}
 
-                                key={doc.id}
+                        refreshDocuments={refreshDocuments}
+                        
 
-                                document={doc}
+                        setPreview={setPreview}
 
-                                refreshDocuments={refreshDocuments}
+                    />
 
-                                onClick={()=>setPreview(doc.preview)}
-
-                            />
-
-                        )
-
-                    )
-
-                )
+                ))
 
             }
 

@@ -1,4 +1,22 @@
+import { useState, useEffect } from "react";
+
 export default function Navbar() {
+
+    const [dark, setDark] = useState(false);
+
+    useEffect(() => {
+
+        if (dark) {
+
+            document.body.classList.add("dark");
+
+        } else {
+
+            document.body.classList.remove("dark");
+
+        }
+
+    }, [dark]);
 
     return (
 
@@ -20,9 +38,28 @@ export default function Navbar() {
 
             </div>
 
-            <div className="badge">
+            <div
+                style={{
+                    display: "flex",
+                    gap: "15px",
+                    alignItems: "center",
+                }}
+            >
 
-                Version 1.0
+                <button
+                    className="theme-btn"
+                    onClick={() => setDark(!dark)}
+                >
+
+                    {dark ? "☀️ Light" : "🌙 Dark"}
+
+                </button>
+
+                <div className="badge">
+
+                    Version 1.0
+
+                </div>
 
             </div>
 

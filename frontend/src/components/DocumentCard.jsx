@@ -1,80 +1,67 @@
-import { FaFilePdf, FaTrash } from "react-icons/fa";
 import api from "../services/api";
 
 export default function DocumentCard({
-
     document,
-
-    onClick,
-
     refreshDocuments,
-
+    setPreview,
 }) {
 
-    const deleteDocument = async (e) => {
+    async function deleteDocument() {
 
-        e.stopPropagation();
+        if (!window.confirm("Delete this document?")) return;
 
-        const ok = window.confirm(
+        try {
 
-            `Delete "${document.filename}" ?`
+            await api.delete(`/files/${document.id}`);
 
-        );
+            refreshDocuments();
 
-        if (!ok) return;
+            setPreview("");
 
-        await api.delete(
+        }
 
-            `/files/${document.id}`
+        catch (error) {
 
-        );
+            console.error(error);
 
-        refreshDocuments();
+            alert("Failed to delete document.");
 
-    };
+        }
+
+    }
 
     return (
 
-        <div
-
-            className="document-card"
-
-            onClick={onClick}
-
-        >
-
-            <FaFilePdf
-                size={22}
-                color="#ef4444"
-            />
+        <div className="document-card">
 
             <div className="doc-info">
 
                 <div className="doc-title">
 
-                    {document.filename}
+                    📄 {document.filename}
 
                 </div>
 
-                <small>
+                <div className="doc-meta">
 
-                    {document.characters}
+                    {document.characters} characters
 
-                    {" "}characters
+                </div>
 
-                </small>
+                <div className="doc-status">
+
+                    Indexed ✓
+
+                </div>
 
             </div>
 
             <button
-
                 className="delete-btn"
-
                 onClick={deleteDocument}
-
             >
 
-                <FaTrash />
+                🗑
 
             </button>
 
