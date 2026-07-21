@@ -1,8 +1,10 @@
 export default function ResearchCard({ metadata }) {
 
-    const keywords = metadata.keywords
-        ? metadata.keywords.split(",")
-        : [];
+    const keywords = Array.isArray(metadata.keywords)
+        ? metadata.keywords
+        : typeof metadata.keywords === "string"
+            ? metadata.keywords.split(",")
+            : [];
 
     return (
 
@@ -44,27 +46,22 @@ export default function ResearchCard({ metadata }) {
 
                     keywords.length > 0
 
-                    ?
+                        ? keywords.map((keyword, index) => (
 
-                    keywords.map((keyword, index)=>(
+                            <span
+                                key={index}
+                                className="keyword"
+                            >
 
-                        <span
+                                {keyword.trim()}
 
-                            key={index}
+                            </span>
 
-                            className="keyword"
+                        ))
 
-                        >
+                        :
 
-                            {keyword.trim()}
-
-                        </span>
-
-                    ))
-
-                    :
-
-                    <span>No keywords</span>
+                        <span>No keywords</span>
 
                 }
 
@@ -76,7 +73,7 @@ export default function ResearchCard({ metadata }) {
 
                 <br />
 
-                {metadata.word_count}
+                {metadata.word_count || 0}
 
             </p>
 
@@ -86,7 +83,7 @@ export default function ResearchCard({ metadata }) {
 
                 <br />
 
-                {metadata.character_count}
+                {metadata.character_count || 0}
 
             </p>
 
@@ -96,7 +93,7 @@ export default function ResearchCard({ metadata }) {
 
                 <br />
 
-                {metadata.reading_time} min
+                {metadata.reading_time || 0} min
 
             </p>
 

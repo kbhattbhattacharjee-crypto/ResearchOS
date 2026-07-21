@@ -248,12 +248,12 @@ Through building ResearchOS, I gained hands-on experience with:
 
 ## Screenshots
 
+
 ### Home Dashboard
 
 ![Home](./docs/home.png)
 
 ### Research Intelligence
-
 
 ![Research](./docs/research.png)
 
