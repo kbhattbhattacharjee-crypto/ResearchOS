@@ -4,7 +4,6 @@ import api from "../services/api";
 export default function Search() {
 
     const [query, setQuery] = useState("");
-
     const [papers, setPapers] = useState([]);
 
     async function searchPapers() {
@@ -17,13 +16,11 @@ export default function Search() {
                 `/search/?query=${encodeURIComponent(query)}`
             );
 
-            setPapers(response.data.results || []);
+            setPapers(response.data.results);
 
-        }
+        } catch (err) {
 
-        catch (error) {
-
-            console.error(error);
+            console.error(err);
 
         }
 
@@ -33,22 +30,22 @@ export default function Search() {
 
         <div className="card">
 
-            <h1>Research Search</h1>
+            <h1>🔍 Research Search</h1>
 
             <div
                 style={{
                     display: "flex",
-                    gap: "10px",
-                    marginBottom: "20px",
+                    gap: 10,
+                    marginBottom: 25,
                 }}
             >
 
                 <input
                     value={query}
-                    onChange={(e) => setQuery(e.target.value)}
-                    onKeyDown={(e) => {
+                    onChange={(e)=>setQuery(e.target.value)}
+                    onKeyDown={(e)=>{
 
-                        if (e.key === "Enter") {
+                        if(e.key==="Enter"){
 
                             searchPapers();
 
@@ -57,164 +54,141 @@ export default function Search() {
                     }}
                     placeholder="Search papers..."
                     style={{
-                        flex: 1,
+                        flex:1,
                     }}
                 />
 
-                <button
-                    onClick={searchPapers}
-                >
+                <button onClick={searchPapers}>
+
                     Search
+
                 </button>
 
             </div>
 
             {
 
-                papers.length === 0
+                papers.map((paper)=>(
 
-                    ?
+                    <div
+                        key={paper.id}
+                        className="card"
+                        style={{
+                            marginBottom:25,
+                        }}
+                    >
 
-                    <p>No results.</p>
+                        <h2>
 
-                    :
+                            {paper.title}
 
-                    papers.map((paper) => (
+                        </h2>
 
-                        <div
-                            key={paper.id}
-                            className="card"
-                            style={{
-                                marginTop: "20px",
-                            }}
+                        <p>
+
+                            <b>📅 Year:</b> {paper.year}
+
+                        </p>
+
+                        <p>
+
+                            <b>⭐ Citations:</b> {paper.citations}
+
+                        </p>
+
+                        <p>
+
+                            <b>🏛 Venue:</b> {paper.venue}
+
+                        </p>
+
+                        <p>
+
+                            <b>👨 Authors:</b>
+
+                            {" "}
+
+                            {paper.authors.join(", ")}
+
+                        </p>
+
+                        <p>
+
+                            <b>📄 Type:</b>
+
+                            {" "}
+
+                            {paper.type}
+
+                        </p>
+
+                        <p>
+
+                            <b>🌍 Language:</b>
+
+                            {" "}
+
+                            {paper.language}
+
+                        </p>
+
+                        <p>
+
+                            <b>🔬 Concepts:</b>
+
+                            {" "}
+
+                            {paper.concepts.join(", ")}
+
+                        </p>
+
+                        <p>
+
+                            <b>📚 References:</b>
+
+                            {" "}
+
+                            {paper.referenced_works}
+
+                        </p>
+
+                        <p>
+
+                            <b>🧠 Relevance:</b>
+
+                            {" "}
+
+                            {Math.round(paper.relevance_score)}
+
+                        </p>
+
+                        <p>
+
+                            <b>🌍 Open Access:</b>
+
+                            {" "}
+
+                            {paper.open_access ? "Yes" : "No"}
+
+                        </p>
+
+                        <a
+
+                            href={paper.doi}
+
+                            target="_blank"
+
+                            rel="noreferrer"
+
                         >
 
-                            <h2>
+                            📖 Open Paper
 
-                                {paper.display_name}
+                        </a>
 
-                            </h2>
+                    </div>
 
-                            <p>
-
-                                <strong>📅 Publication Year:</strong>{" "}
-
-                                {paper.publication_year}
-
-                            </p>
-
-                            <p>
-
-                                <strong>⭐ Citations:</strong>{" "}
-
-                                {paper.cited_by_count ?? 0}
-
-                            </p>
-
-                            <p>
-
-                                <strong>🌍 Open Access:</strong>{" "}
-
-                                {
-
-                                    paper.open_access?.is_oa
-
-                                        ? "Yes"
-
-                                        : "No"
-
-                                }
-
-                            </p>
-
-                            <p>
-
-                                <strong>👨 Authors:</strong>{" "}
-
-                                {
-
-                                    paper.authorships
-
-                                        ?
-
-                                        paper.authorships
-                                            .slice(0, 5)
-                                            .map(a => a.author.display_name)
-                                            .join(", ")
-
-                                        :
-
-                                        "Unknown"
-
-                                }
-
-                            </p>
-
-                            <p>
-
-                                <strong>🏛 Venue:</strong>{" "}
-
-                                {
-
-                                    paper.primary_location?.source?.display_name
-
-                                    ??
-
-                                    "Unknown"
-
-                                }
-
-                            </p>
-
-                            <p>
-
-                                <strong>🧠 Relevance Score:</strong>{" "}
-
-                                {
-
-                                    Math.round(
-
-                                        paper.relevance_score ?? 0
-
-                                    )
-
-                                }
-
-                            </p>
-
-                            <p>
-
-                                <strong>📖 DOI:</strong>{" "}
-
-                                {
-
-                                    paper.doi
-
-                                        ?
-
-                                        <a
-                                            href={paper.doi}
-                                            target="_blank"
-                                            rel="noreferrer"
-                                        >
-
-                                            Open Paper
-
-                                        </a>
-
-                                        :
-
-                                        "N/A"
-
-                                }
-
-                            </p>
-
-                            <hr />
-
-                        </div>
-
-                    ))
+                ))
 
             }
 
