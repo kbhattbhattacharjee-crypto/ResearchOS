@@ -1,22 +1,24 @@
 from fastapi import FastAPI
-
-from app.core.database import Base, engine
-from app.routers.home import router as home_router
-from app.routers.health import router as health_router
-
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.core.database import Base, engine
+
+from app.routers.home import router as home_router
+from app.routers.health import router as health_router
 from app.routers.notes import router as notes_router
 from app.routers.files import router as files_router
+from app.routers.paper_search import router as paper_search_router
 
 
 Base.metadata.create_all(bind=engine)
 
+
 app = FastAPI(
     title="ResearchOS API",
-    version="1.0.0",
-    description="Backend API"
+    version="2.0.0",
+    description="AI Powered Research Operating System",
 )
+
 
 app.add_middleware(
     CORSMiddleware,
@@ -28,14 +30,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
 app.include_router(home_router)
 app.include_router(health_router)
 app.include_router(notes_router)
 app.include_router(files_router)
+app.include_router(paper_search_router)
+
 
 @app.get("/")
 def home():
     return {
         "project": "ResearchOS",
+        "version": "2.0.0",
         "status": "Running",
     }
