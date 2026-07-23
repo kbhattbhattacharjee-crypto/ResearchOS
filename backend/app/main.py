@@ -10,6 +10,7 @@ from app.routers.files import router as files_router
 from app.routers.paper_search import router as paper_search_router
 
 
+
 Base.metadata.create_all(bind=engine)
 
 
@@ -36,6 +37,7 @@ app.include_router(health_router)
 app.include_router(notes_router)
 app.include_router(files_router)
 app.include_router(paper_search_router)
+
 
 
 @app.get("/")

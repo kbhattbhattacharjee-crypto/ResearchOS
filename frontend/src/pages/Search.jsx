@@ -17,8 +17,6 @@ export default function Search() {
                 `/search/?query=${encodeURIComponent(query)}`
             );
 
-            console.log(response.data);
-
             setPapers(response.data.results || []);
 
         }
@@ -41,6 +39,7 @@ export default function Search() {
                 style={{
                     display: "flex",
                     gap: "10px",
+                    marginBottom: "20px",
                 }}
             >
 
@@ -70,8 +69,6 @@ export default function Search() {
 
             </div>
 
-            <hr />
-
             {
 
                 papers.length === 0
@@ -86,26 +83,130 @@ export default function Search() {
 
                         <div
                             key={paper.id}
+                            className="card"
                             style={{
-                                marginBottom: "25px",
+                                marginTop: "20px",
                             }}
                         >
 
-                            <h3>
+                            <h2>
 
-                                {paper.display_name || paper.title}
+                                {paper.display_name}
 
-                            </h3>
+                            </h2>
 
                             <p>
 
-                                <strong>Year:</strong> {paper.publication_year}
+                                <strong>📅 Publication Year:</strong>{" "}
+
+                                {paper.publication_year}
 
                             </p>
 
                             <p>
 
-                                <strong>Citations:</strong> {paper.cited_by_count ?? "N/A"}
+                                <strong>⭐ Citations:</strong>{" "}
+
+                                {paper.cited_by_count ?? 0}
+
+                            </p>
+
+                            <p>
+
+                                <strong>🌍 Open Access:</strong>{" "}
+
+                                {
+
+                                    paper.open_access?.is_oa
+
+                                        ? "Yes"
+
+                                        : "No"
+
+                                }
+
+                            </p>
+
+                            <p>
+
+                                <strong>👨 Authors:</strong>{" "}
+
+                                {
+
+                                    paper.authorships
+
+                                        ?
+
+                                        paper.authorships
+                                            .slice(0, 5)
+                                            .map(a => a.author.display_name)
+                                            .join(", ")
+
+                                        :
+
+                                        "Unknown"
+
+                                }
+
+                            </p>
+
+                            <p>
+
+                                <strong>🏛 Venue:</strong>{" "}
+
+                                {
+
+                                    paper.primary_location?.source?.display_name
+
+                                    ??
+
+                                    "Unknown"
+
+                                }
+
+                            </p>
+
+                            <p>
+
+                                <strong>🧠 Relevance Score:</strong>{" "}
+
+                                {
+
+                                    Math.round(
+
+                                        paper.relevance_score ?? 0
+
+                                    )
+
+                                }
+
+                            </p>
+
+                            <p>
+
+                                <strong>📖 DOI:</strong>{" "}
+
+                                {
+
+                                    paper.doi
+
+                                        ?
+
+                                        <a
+                                            href={paper.doi}
+                                            target="_blank"
+                                            rel="noreferrer"
+                                        >
+
+                                            Open Paper
+
+                                        </a>
+
+                                        :
+
+                                        "N/A"
+
+                                }
 
                             </p>
 

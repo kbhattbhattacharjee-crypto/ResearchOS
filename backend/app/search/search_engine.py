@@ -1,8 +1,38 @@
 from app.external.openalex import search_papers
 
+from app.search.paper_ranker import rank_papers
+
+from app.literature.paper_parser import parse_paper
+
 
 async def search(query: str):
 
-    papers = await search_papers(query)
+    response = await search_papers(query)
 
-    return papers
+    ranked = rank_papers(
+
+        response["results"]
+
+    )
+
+    parsed = [
+
+        parse_paper(
+
+            paper
+
+        )
+
+        for paper in ranked
+
+    ]
+
+    return {
+
+        "query": query,
+
+        "count": len(parsed),
+
+        "results": parsed,
+
+    }

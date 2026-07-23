@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
 
@@ -10,7 +11,9 @@ export default function Navbar() {
 
             document.body.classList.add("dark");
 
-        } else {
+        }
+
+        else {
 
             document.body.classList.remove("dark");
 
@@ -24,44 +27,64 @@ export default function Navbar() {
 
             <div>
 
-                <h1>
-
-                    ResearchOS
-
-                </h1>
+                <h1>ResearchOS</h1>
 
                 <p>
 
-                    AI-powered workspace for reading, organizing and understanding research papers.
+                    AI-powered research operating system
 
                 </p>
 
             </div>
 
-            <div
+            <nav
                 style={{
                     display: "flex",
-                    gap: "15px",
+                    gap: "18px",
                     alignItems: "center",
                 }}
             >
+
+                <Link to="/">
+                    Home
+                </Link>
+
+                <Link to="/search">
+                    Search
+                </Link>
+
+                <Link to="#">
+                    Library
+                </Link>
+
+                <Link to="#">
+                    Literature
+                </Link>
+
+                <Link to="#">
+                    Graph
+                </Link>
+
+                <Link to="#">
+                    AI
+                </Link>
 
                 <button
                     className="theme-btn"
                     onClick={() => setDark(!dark)}
                 >
 
-                    {dark ? "☀️ Light" : "🌙 Dark"}
+                    {dark ? "☀️" : "🌙"}
 
                 </button>
 
                 <div className="badge">
 
-                    Version 1.0
+                    Version 2.0
 
                 </div>
 
-            </div>
+            </nav>
 
         </header>
 
