@@ -1,37 +1,44 @@
-QUERY_MAP = {
+QUERY_EXPANSIONS = {
 
     "llm": [
         "large language model",
-        "gpt",
-        "bert",
         "transformer",
         "foundation model",
+        "generative ai",
     ],
 
     "nlp": [
         "natural language processing",
-        "language model",
         "bert",
         "transformer",
+        "language model",
+    ],
+
+    "rag": [
+        "retrieval augmented generation",
+        "vector database",
+        "embedding",
+    ],
+
+    "cnn": [
+        "convolutional neural network",
+        "deep learning",
+        "computer vision",
+    ],
+
+    "gan": [
+        "generative adversarial network",
+        "image generation",
+    ],
+
+    "rl": [
+        "reinforcement learning",
+        "deep reinforcement learning",
     ],
 
     "cv": [
         "computer vision",
-        "vision transformer",
-        "cnn",
-        "image recognition",
-    ],
-
-    "ai": [
-        "artificial intelligence",
-        "machine learning",
-        "deep learning",
-    ],
-
-    "ml": [
-        "machine learning",
-        "supervised learning",
-        "unsupervised learning",
+        "image processing",
     ],
 
 }
@@ -43,8 +50,12 @@ def expand_query(query: str):
 
     key = query.lower().strip()
 
-    if key in QUERY_MAP:
+    if key in QUERY_EXPANSIONS:
 
-        expanded.extend(QUERY_MAP[key])
+        expanded.extend(
+
+            QUERY_EXPANSIONS[key]
+
+        )
 
     return expanded

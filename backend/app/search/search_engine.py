@@ -1,20 +1,42 @@
-from app.search.pipeline.pipeline import run_pipeline
+from app.external.openalex import search_papers
 
 from app.search.paper_ranker import rank_papers
+
+from app.literature.paper_parser import parse_paper
+
+from app.vector.indexer import index_papers
 
 
 async def search(query: str):
 
-    papers = await run_pipeline(query)
+    response = await search_papers(query)
 
-    ranked = rank_papers(papers)
+    ranked = rank_papers(
+
+        response["results"]
+
+    )
+
+    parsed = [
+
+        parse_paper(
+
+            paper
+
+        )
+
+        for paper in ranked
+
+    ]
+
+    index_papers(parsed)
 
     return {
 
         "query": query,
 
-        "count": len(ranked),
+        "count": len(parsed),
 
-        "results": ranked,
+        "results": parsed,
 
     }
