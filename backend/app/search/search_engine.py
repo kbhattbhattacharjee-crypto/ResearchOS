@@ -8,6 +8,8 @@ from app.literature.paper_parser import parse_paper
 
 from app.vector.indexer import index_papers
 
+from app.analytics.search_logger import log_search
+
 
 async def search(query: str):
 
@@ -30,6 +32,14 @@ async def search(query: str):
     index_papers(parsed)
 
     semantic_results = semantic_search(query)
+    
+    log_search(
+    
+        query,
+    
+        len(parsed),
+    
+    )
 
     return {
 

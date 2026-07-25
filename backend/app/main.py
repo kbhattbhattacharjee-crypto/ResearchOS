@@ -9,7 +9,7 @@ from app.routers.notes import router as notes_router
 from app.routers.files import router as files_router
 from app.routers.paper_search import router as paper_search_router
 from app.routers.vector import router as vector_router
-
+from app.routers.analytics import router as analytics_router
 
 
 
@@ -41,6 +41,7 @@ app.include_router(notes_router)
 app.include_router(files_router)
 app.include_router(paper_search_router)
 app.include_router(vector_router)
+app.include_router(analytics_router)
 
 
 @app.get("/")
