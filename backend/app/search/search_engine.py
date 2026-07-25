@@ -6,6 +6,8 @@ from app.literature.paper_parser import parse_paper
 
 from app.vector.indexer import index_papers
 
+from app.search.hybrid_ranker import hybrid_rank
+
 
 async def search(query: str):
 
@@ -16,6 +18,7 @@ async def search(query: str):
         response["results"]
 
     )
+
 
     parsed = [
 
@@ -28,6 +31,8 @@ async def search(query: str):
         for paper in ranked
 
     ]
+    
+    parsed = hybrid_rank(parsed)
 
     index_papers(parsed)
 

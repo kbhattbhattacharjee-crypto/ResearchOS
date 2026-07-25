@@ -22,38 +22,39 @@ def parse_paper(paper: dict) -> dict:
         "year": paper.get("publication_year"),
         "type": paper.get("type"),
         "language": paper.get("language"),
-
+    
         # -----------------------------
         # Ranking Information
         # -----------------------------
         "citations": paper.get("cited_by_count", 0),
         "relevance_score": paper.get("relevance_score", 0),
-
+    
         # -----------------------------
         # Publication
         # -----------------------------
         "doi": paper.get("doi"),
+    
         "venue": source.get(
             "display_name",
-            "Unknown"
+            "Unknown",
         ),
-
+    
         "publisher": source.get(
             "host_organization_name"
         ),
-
+    
         # -----------------------------
         # Open Access
         # -----------------------------
         "open_access": open_access.get(
             "is_oa",
-            False
+            False,
         ),
-
+    
         "oa_status": open_access.get(
             "oa_status"
         ),
-
+    
         # -----------------------------
         # Authors
         # -----------------------------
@@ -67,16 +68,16 @@ def parse_paper(paper: dict) -> dict:
                 []
             )
         ],
-
+    
         "authors_count": len(
             paper.get(
                 "authorships",
                 []
             )
         ),
-
+    
         # -----------------------------
-        # Concepts / Keywords
+        # Concepts
         # -----------------------------
         "concepts": [
             concept.get("display_name")
@@ -85,7 +86,14 @@ def parse_paper(paper: dict) -> dict:
                 []
             )[:8]
         ],
-
+    
+        "keyword_count": len(
+            paper.get(
+                "concepts",
+                []
+            )
+        ),
+    
         # -----------------------------
         # References
         # -----------------------------
@@ -95,11 +103,21 @@ def parse_paper(paper: dict) -> dict:
                 []
             )
         ),
-
+    
+        # -----------------------------
+        # Open Access Bonus
+        # -----------------------------
+        "oa_bonus": (
+            1
+            if open_access.get(
+                "is_oa",
+                False,
+            )
+            else 0
+        ),
+    
         # -----------------------------
         # Abstract
-        # (OpenAlex stores inverted index)
-        # We'll reconstruct it later.
         # -----------------------------
         "abstract": paper.get(
             "abstract_inverted_index"
