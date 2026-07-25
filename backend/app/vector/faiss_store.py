@@ -7,6 +7,9 @@ EMBEDDING_DIM = 384
 class FaissStore:
 
     def __init__(self):
+        self.reset()
+
+    def reset(self):
 
         self.index = faiss.IndexFlatIP(
             EMBEDDING_DIM
@@ -25,17 +28,13 @@ class FaissStore:
         paper_id = metadata.get("id")
 
         if paper_id in self.ids:
-
             return
 
         self.ids.add(paper_id)
 
         vector = np.array(
-
             [embedding],
-
             dtype="float32",
-
         )
 
         self.index.add(vector)
@@ -43,7 +42,6 @@ class FaissStore:
         self.documents.append(metadata)
 
     def size(self):
-
         return self.index.ntotal
 
 

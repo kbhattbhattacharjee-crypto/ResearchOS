@@ -4,7 +4,10 @@ import api from "../services/api";
 export default function Search() {
 
     const [query, setQuery] = useState("");
+
     const [papers, setPapers] = useState([]);
+
+    const [semantic, setSemantic] = useState([]);
 
     async function searchPapers() {
 
@@ -13,12 +16,26 @@ export default function Search() {
         try {
 
             const response = await api.get(
+
                 `/search/?query=${encodeURIComponent(query)}`
+
             );
 
-            setPapers(response.data.results);
+            setPapers(
 
-        } catch (err) {
+                response.data.results || []
+
+            );
+
+            setSemantic(
+
+                response.data.semantic_results || []
+
+            );
+
+        }
+
+        catch (err) {
 
             console.error(err);
 
@@ -33,32 +50,54 @@ export default function Search() {
             <h1>🔍 Research Search</h1>
 
             <div
+
                 style={{
+
                     display: "flex",
+
                     gap: 10,
+
                     marginBottom: 25,
+
                 }}
+
             >
 
                 <input
-                    value={query}
-                    onChange={(e)=>setQuery(e.target.value)}
-                    onKeyDown={(e)=>{
 
-                        if(e.key==="Enter"){
+                    value={query}
+
+                    onChange={(e) =>
+
+                        setQuery(e.target.value)
+
+                    }
+
+                    onKeyDown={(e) => {
+
+                        if (e.key === "Enter") {
 
                             searchPapers();
 
                         }
 
                     }}
+
                     placeholder="Search papers..."
+
                     style={{
-                        flex:1,
+
+                        flex: 1,
+
                     }}
+
                 />
 
-                <button onClick={searchPapers}>
+                <button
+
+                    onClick={searchPapers}
+
+                >
 
                     Search
 
@@ -66,16 +105,30 @@ export default function Search() {
 
             </div>
 
+            <hr />
+
+            <h2>
+
+                Search Results
+
+            </h2>
+
             {
 
-                papers.map((paper)=>(
+                papers.map((paper) => (
 
                     <div
+
                         key={paper.id}
+
                         className="card"
+
                         style={{
-                            marginBottom:25,
+
+                            marginBottom: 25,
+
                         }}
+
                     >
 
                         <h2>
@@ -86,37 +139,59 @@ export default function Search() {
 
                         <p>
 
-                            <b>📅 Year:</b> {paper.year}
+                            <b>📅 Year:</b>{" "}
+
+                            {paper.year}
 
                         </p>
 
                         <p>
 
-                            <b>⭐ Citations:</b> {paper.citations}
+                            <b>⭐ Citations:</b>{" "}
+
+                            {paper.citations}
 
                         </p>
 
                         <p>
 
-                            <b>🏛 Venue:</b> {paper.venue}
+                            <b>🏛 Venue:</b>{" "}
+
+                            {paper.venue}
 
                         </p>
 
                         <p>
 
-                            <b>👨 Authors:</b>
+                            <b>👨 Authors:</b>{" "}
 
-                            {" "}
+                            {
 
-                            {paper.authors.join(", ")}
+                                paper.authors.length
+
+                                    ?
+
+                                    paper.authors.join(", ")
+
+                                    :
+
+                                    "Unknown"
+
+                            }
 
                         </p>
 
                         <p>
 
-                            <b>📄 Type:</b>
+                            <b>👥 Author Count:</b>{" "}
 
-                            {" "}
+                            {paper.authors_count}
+
+                        </p>
+
+                        <p>
+
+                            <b>📄 Type:</b>{" "}
 
                             {paper.type}
 
@@ -124,9 +199,7 @@ export default function Search() {
 
                         <p>
 
-                            <b>🌍 Language:</b>
-
-                            {" "}
+                            <b>🌍 Language:</b>{" "}
 
                             {paper.language}
 
@@ -134,19 +207,27 @@ export default function Search() {
 
                         <p>
 
-                            <b>🔬 Concepts:</b>
+                            <b>🔬 Concepts:</b>{" "}
 
-                            {" "}
+                            {
 
-                            {paper.concepts.join(", ")}
+                                paper.concepts.length
+
+                                    ?
+
+                                    paper.concepts.join(", ")
+
+                                    :
+
+                                    "N/A"
+
+                            }
 
                         </p>
 
                         <p>
 
-                            <b>📚 References:</b>
-
-                            {" "}
+                            <b>📚 References:</b>{" "}
 
                             {paper.referenced_works}
 
@@ -154,37 +235,135 @@ export default function Search() {
 
                         <p>
 
-                            <b>🧠 Relevance:</b>
+                            <b>🧠 Relevance:</b>{" "}
 
-                            {" "}
+                            {
 
-                            {Math.round(paper.relevance_score)}
+                                Math.round(
+
+                                    paper.relevance_score
+
+                                )
+
+                            }
 
                         </p>
 
                         <p>
 
-                            <b>🌍 Open Access:</b>
+                            <b>🌍 Open Access:</b>{" "}
 
-                            {" "}
+                            {
 
-                            {paper.open_access ? "Yes" : "No"}
+                                paper.open_access
+
+                                    ?
+
+                                    "Yes"
+
+                                    :
+
+                                    "No"
+
+                            }
 
                         </p>
 
-                        <a
+                        {
 
-                            href={paper.doi}
+                            paper.doi && (
 
-                            target="_blank"
+                                <a
 
-                            rel="noreferrer"
+                                    href={paper.doi}
 
-                        >
+                                    target="_blank"
 
-                            📖 Open Paper
+                                    rel="noreferrer"
 
-                        </a>
+                                >
+
+                                    📖 Open Paper
+
+                                </a>
+
+                            )
+
+                        }
+
+                    </div>
+
+                ))
+
+            }
+
+            <hr />
+
+            <h2>
+
+                🤖 AI Similar Papers
+
+            </h2>
+
+            {
+
+                semantic.length === 0
+
+                ?
+
+                <p>
+
+                    No semantic matches yet.
+
+                </p>
+
+                :
+
+                semantic.map((paper) => (
+
+                    <div
+
+                        key={paper.id}
+
+                        className="card"
+
+                        style={{
+
+                            marginBottom: 20,
+
+                        }}
+
+                    >
+
+                        <h3>
+
+                            {paper.title}
+
+                        </h3>
+
+                        <p>
+
+                            <b>🏛 Venue:</b>{" "}
+
+                            {paper.venue}
+
+                        </p>
+
+                        <p>
+
+                            <b>⭐ Citations:</b>{" "}
+
+                            {paper.citations}
+
+                        </p>
+
+                        <p>
+
+                            <b>📅 Year:</b>{" "}
+
+                            {paper.year}
+
+                        </p>
 
                     </div>
 
