@@ -1,38 +1,55 @@
-import "./App.css";
+import "./styles/variables.css";
+import "./styles/shell.css";
 
 import {
-    BrowserRouter,
-    Routes,
-    Route,
+ BrowserRouter,
+ Routes,
+ Route,
 } from "react-router-dom";
 
-import Home from "./pages/Home";
+import AppShell from "./layout/AppShell";
+
+import Workspace from "./pages/Workspace";
+import Library from "./pages/Library";
 import Search from "./pages/Search";
+import Analytics from "./pages/Analytics";
 
-function App() {
+export default function App() {
 
-    return (
+ return (
 
-        <BrowserRouter>
+  <BrowserRouter>
 
-            <Routes>
+   <Routes>
 
-                <Route
-                    path="/"
-                    element={<Home />}
-                />
+    <Route element={<AppShell />}>
 
-                <Route
-                    path="/search"
-                    element={<Search />}
-                />
+     <Route
+      path="/"
+      element={<Workspace />}
+     />
 
-            </Routes>
+     <Route
+      path="/library"
+      element={<Library />}
+     />
 
-        </BrowserRouter>
+     <Route
+      path="/search"
+      element={<Search />}
+     />
 
-    );
+     <Route
+      path="/analytics"
+      element={<Analytics />}
+     />
+
+    </Route>
+
+   </Routes>
+
+  </BrowserRouter>
+
+ );
 
 }
-
-export default App;

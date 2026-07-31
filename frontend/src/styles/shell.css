@@ -1,0 +1,124 @@
+body {
+
+    margin:0;
+   
+    background:var(--bg);
+   
+    color:var(--text);
+   
+    font-family:Inter,sans-serif;
+   
+   }
+   
+   .shell {
+   
+    display:flex;
+   
+    min-height:100vh;
+   
+   }
+   
+   .app-sidebar {
+   
+    width:260px;
+   
+    background:#070b14;
+   
+    border-right:1px solid var(--border);
+   
+    padding:24px;
+   
+   }
+   
+   .logo {
+   
+    font-size:24px;
+   
+    font-weight:700;
+   
+    margin-bottom:40px;
+   
+   }
+   
+   .app-sidebar nav {
+   
+    display:flex;
+   
+    flex-direction:column;
+   
+    gap:12px;
+   
+   }
+   
+   .app-sidebar a {
+   
+    color:var(--muted);
+   
+    text-decoration:none;
+   
+    padding:12px;
+   
+    border-radius:12px;
+   
+   }
+   
+   .app-sidebar a.active {
+   
+    background:var(--accent);
+   
+    color:white;
+   
+   }
+   
+   .shell-main {
+   
+    flex:1;
+   
+   }
+   
+   .topbar {
+   
+    height:70px;
+   
+    border-bottom:1px solid var(--border);
+   
+    display:flex;
+   
+    justify-content:space-between;
+   
+    align-items:center;
+   
+    padding:0 30px;
+   
+   }
+   
+   .shell-content {
+   
+    padding:40px;
+   
+   }
+   
+   .panel {
+   
+    background:var(--panel);
+   
+    border:1px solid var(--border);
+   
+    border-radius:20px;
+   
+    padding:24px;
+   
+   }
+   
+   .workspace-grid {
+   
+    display:grid;
+   
+    gap:24px;
+   
+    grid-template-columns:
+    repeat(3,1fr);
+   
+    margin-top:30px;
+   
+   }
