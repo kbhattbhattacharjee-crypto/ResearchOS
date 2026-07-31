@@ -1,12 +1,153 @@
-:root {
+:root{
 
-    --bg:#0b1120;
-    --panel:#111827;
-    --border:#1f2937;
-   
+    /* Background */
+    
+    --bg:#070b14;
+    --bg-secondary:#0d1322;
+    --surface:rgba(17,24,39,.72);
+    --surface-hover:rgba(25,33,49,.88);
+    
+    /* Borders */
+    
+    --border:rgba(255,255,255,.08);
+    --border-strong:rgba(255,255,255,.15);
+    
+    /* Typography */
+    
     --text:#f8fafc;
-    --muted:#94a3b8;
-   
-    --accent:#3b82f6;
-   
-   }
+    --text-secondary:#cbd5e1;
+    --text-muted:#94a3b8;
+    
+    /* Brand */
+    
+    --primary:#4f8cff;
+    --primary-hover:#3f7cff;
+    
+    --success:#16c784;
+    --warning:#f59e0b;
+    --danger:#ef4444;
+    
+    /* Radius */
+    
+    --radius-xs:8px;
+    --radius-sm:12px;
+    --radius-md:18px;
+    --radius-lg:26px;
+    --radius-xl:34px;
+    
+    /* Blur */
+    
+    --blur:18px;
+    
+    /* Shadows */
+    
+    --shadow-sm:
+    0 4px 10px rgba(0,0,0,.15);
+    
+    --shadow-md:
+    0 10px 30px rgba(0,0,0,.22);
+    
+    --shadow-lg:
+    0 30px 80px rgba(0,0,0,.45);
+    
+    /* Transition */
+    
+    --transition:.28s cubic-bezier(.4,0,.2,1);
+    
+    }
+    
+    /* Reset */
+    
+    *{
+    
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    
+    }
+    
+    html{
+    
+    scroll-behavior:smooth;
+    
+    }
+    
+    body{
+    
+    background:
+    
+    radial-gradient(circle at top left,#1d4ed830 0%,transparent 40%),
+    
+    radial-gradient(circle at bottom right,#2563eb20 0%,transparent 35%),
+    
+    var(--bg);
+    
+    color:var(--text);
+    
+    font-family:
+    
+    Inter,
+    
+    system-ui,
+    
+    sans-serif;
+    
+    min-height:100vh;
+    
+    overflow-x:hidden;
+    
+    }
+    
+    /* Scrollbar */
+    
+    ::-webkit-scrollbar{
+    
+    width:10px;
+    
+    }
+    
+    ::-webkit-scrollbar-track{
+    
+    background:#08101b;
+    
+    }
+    
+    ::-webkit-scrollbar-thumb{
+    
+    background:#2d3d56;
+    
+    border-radius:999px;
+    
+    }
+    
+    ::-webkit-scrollbar-thumb:hover{
+    
+    background:#48617f;
+    
+    }
+    
+    a{
+    
+    text-decoration:none;
+    
+    color:inherit;
+    
+    }
+    
+    button{
+    
+    font-family:inherit;
+    
+    }
+    
+    input{
+    
+    font-family:inherit;
+    
+    }
+    
+    textarea{
+    
+    font-family:inherit;
+    
+    }
