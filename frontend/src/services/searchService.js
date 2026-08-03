@@ -1,9 +1,21 @@
 import api from "./api";
 
 export async function searchPapers(query) {
-    const response = await api.get(
-        `/search?query=${query}`
-    );
 
-    return response.data;
+ if (!query?.trim()) {
+
+  return {
+   results: [],
+   semantic_results: [],
+  };
+
+ }
+
+ const response =
+  await api.get(
+   `/search/?query=${encodeURIComponent(query)}`
+  );
+
+ return response.data;
+
 }

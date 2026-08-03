@@ -1,154 +1,132 @@
-import { useMemo, useState } from "react";
-import { Search, FileText, Calendar, Database } from "lucide-react";
 import useDocuments from "../hooks/useDocuments";
 
 export default function Library() {
 
-    const { documents } = useDocuments();
+ const { documents } =
+  useDocuments();
 
-    const [query, setQuery] = useState("");
+ return (
 
-    const filtered = useMemo(() => {
+  <div>
 
-        return documents.filter((doc) =>
-            doc.filename
-                .toLowerCase()
-                .includes(query.toLowerCase())
-        );
+   <div className="page-header">
 
-    }, [documents, query]);
+    <h1>
 
-    return (
+     Research Library
 
-        <>
+    </h1>
 
-            <div className="page-header">
+    <p>
 
-                <div>
+     Indexed documents, extracted knowledge and research assets.
 
-                    <h1>
+    </p>
 
-                        Research Library
+   </div>
 
-                    </h1>
+   <div className="library-grid">
 
-                    <p>
+    {
 
-                        Organize every paper inside one searchable knowledge base.
+     documents.length === 0
 
-                    </p>
+     ?
 
-                </div>
+     (
 
-            </div>
+      <div className="glass empty-card">
 
-            <div className="glass search-box">
+       <h2>
 
-                <Search size={18} />
+        No Documents Yet
 
-                <input
+       </h2>
 
-                    placeholder="Search your library..."
+       <p>
 
-                    value={query}
+        Upload a paper and ResearchOS will build
+        summaries, metadata and semantic search.
 
-                    onChange={(e)=>setQuery(e.target.value)}
+       </p>
 
-                />
+      </div>
 
-            </div>
+     )
 
-            <div className="library-grid">
+     :
 
-                {
+     (
 
-                    filtered.length===0 ?
+      documents.map((doc)=>(
 
-                    (
+       <div
+        key={doc.id}
+        className="glass library-card"
+       >
 
-                        <div className="glass empty-card">
+        <div className="library-top">
 
-                            <FileText size={60}/>
+         <strong>
 
-                            <h2>
+          Research Paper
 
-                                No Papers Found
+         </strong>
 
-                            </h2>
+         <span>
 
-                            <p>
+          Indexed
 
-                                Upload your first research paper to start building your knowledge base.
+         </span>
 
-                            </p>
+        </div>
 
-                        </div>
+        <h3>
 
-                    )
+         {doc.filename}
 
-                    :
+        </h3>
 
-                    filtered.map(doc=>(
+        <div className="library-meta">
 
-                        <div
-                            key={doc.id}
-                            className="glass library-card"
-                        >
+         <div>
 
-                            <div className="library-top">
+          Characters:
+          {" "}
+          {doc.characters}
 
-                                <FileText size={30}/>
+         </div>
 
-                                <span>
+         <div>
 
-                                    Indexed
+          Status:
+          {" "}
+          Ready
 
-                                </span>
+         </div>
 
-                            </div>
+        </div>
 
-                            <h3>
+        <button
+         className="primary-btn"
+        >
 
-                                {doc.filename}
+         Open
 
-                            </h3>
+        </button>
 
-                            <div className="library-meta">
+       </div>
 
-                                <div>
+      ))
 
-                                    <Database size={16}/>
+     )
 
-                                    {doc.characters.toLocaleString()} chars
+    }
 
-                                </div>
+   </div>
 
-                                <div>
+  </div>
 
-                                    <Calendar size={16}/>
-
-                                    Ready
-
-                                </div>
-
-                            </div>
-
-                            <button className="primary-btn">
-
-                                Open
-
-                            </button>
-
-                        </div>
-
-                    ))
-
-                }
-
-            </div>
-
-        </>
-
-    );
+ );
 
 }

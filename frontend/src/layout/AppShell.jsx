@@ -1,39 +1,53 @@
 import { NavLink, Outlet } from "react-router-dom";
 
 export default function AppShell() {
+
   return (
+
     <div className="shell">
 
       <aside className="app-sidebar">
 
         <div className="logo">
+
           <span className="logo-dot"></span>
+
           <div>
+
             <h2>ResearchOS</h2>
-            <small>AI Research Workspace</small>
+
+            <small>
+              Research Intelligence Platform
+            </small>
+
           </div>
+
         </div>
 
         <nav>
 
           <NavLink to="/">
-            <span>⌂</span>
+
             <span>Workspace</span>
+
           </NavLink>
 
           <NavLink to="/library">
-            <span>◫</span>
+
             <span>Library</span>
+
           </NavLink>
 
           <NavLink to="/search">
-            <span>⌕</span>
+
             <span>Search</span>
+
           </NavLink>
 
           <NavLink to="/analytics">
-            <span>◔</span>
+
             <span>Analytics</span>
+
           </NavLink>
 
         </nav>
@@ -42,12 +56,22 @@ export default function AppShell() {
 
           <div className="storage-card">
 
-            <small>Storage</small>
+            <small>
 
-            <h3>2.4 GB</h3>
+              Knowledge Capacity
+
+            </small>
+
+            <h3>
+
+              2.4 GB
+
+            </h3>
 
             <div className="storage-bar">
+
               <div className="storage-fill"></div>
+
             </div>
 
           </div>
@@ -62,10 +86,17 @@ export default function AppShell() {
 
           <div>
 
-            <h1>Research Workspace</h1>
+            <h1>
+
+              Research Intelligence Workspace
+
+            </h1>
 
             <p>
-              Organize papers. Search knowledge. Build intelligence.
+
+              Literature discovery, semantic search,
+              knowledge extraction and analytics.
+
             </p>
 
           </div>
@@ -80,7 +111,7 @@ export default function AppShell() {
 
             <div className="profile-circle">
 
-              R
+              KB
 
             </div>
 
@@ -97,5 +128,7 @@ export default function AppShell() {
       </section>
 
     </div>
+
   );
+
 }

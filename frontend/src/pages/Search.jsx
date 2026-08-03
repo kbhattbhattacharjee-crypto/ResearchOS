@@ -1,378 +1,233 @@
 import { useState } from "react";
-import api from "../services/api";
+import { Search as SearchIcon } from "lucide-react";
+
+import useSearch from "../hooks/useSearch";
+
+import SearchResultCard from "../components/search/SearchResultCard";
+import SearchSkeleton from "../components/search/SearchSkeleton";
 
 export default function Search() {
 
-    const [query, setQuery] = useState("");
+ const [query, setQuery] =
+  useState("");
 
-    const [papers, setPapers] = useState([]);
+ const {
 
-    const [semantic, setSemantic] = useState([]);
+  loading,
+  error,
+  results,
+  semantic,
+  runSearch,
 
-    async function searchPapers() {
+ } = useSearch();
 
-        if (!query.trim()) return;
+ async function handleSearch() {
 
-        try {
+  if (!query.trim()) return;
 
-            const response = await api.get(
+  await runSearch(query);
 
-                `/search/?query=${encodeURIComponent(query)}`
+ }
 
-            );
+ return (
 
-            setPapers(
+  <div>
 
-                response.data.results || []
+   <div className="page-header">
 
-            );
+    <div>
 
-            setSemantic(
+     <h1>
+      Research Search
+     </h1>
 
-                response.data.semantic_results || []
+     <p>
+      Search papers, concepts, authors and knowledge.
+     </p>
 
-            );
+    </div>
 
-        }
+   </div>
 
-        catch (err) {
+   <div className="glass-card search-panel">
 
-            console.error(err);
+    <div className="search-input-wrapper">
 
-        }
+     <SearchIcon size={18} />
 
-    }
+     <input
+      value={query}
+      onChange={(e)=>
+       setQuery(e.target.value)
+      }
+      placeholder="Search papers, authors, topics..."
+      onKeyDown={(e)=>{
 
-    return (
+       if(e.key==="Enter"){
 
-        <div className="card">
+        handleSearch();
 
-            <h1>🔍 Research Search</h1>
+       }
 
-            <div
+      }}
+     />
 
-                style={{
+    </div>
 
-                    display: "flex",
+    <button
+     className="primary-btn"
+     onClick={handleSearch}
+    >
+     Search
+    </button>
 
-                    gap: 10,
+   </div>
 
-                    marginBottom: 25,
+   {error && (
 
-                }}
+    <div
+     className="glass-card"
+     style={{
+      marginTop:20,
+      color:"#ff8080",
+     }}
+    >
+     {error}
+    </div>
 
-            >
+   )}
 
-                <input
+   {loading && (
 
-                    value={query}
+    <div
+     className="search-results"
+     style={{
+      marginTop:20,
+     }}
+    >
 
-                    onChange={(e) =>
+     <SearchSkeleton />
+     <SearchSkeleton />
+     <SearchSkeleton />
 
-                        setQuery(e.target.value)
+    </div>
 
-                    }
+   )}
 
-                    onKeyDown={(e) => {
+   {
 
-                        if (e.key === "Enter") {
+    !loading &&
+    results.length > 0 &&
 
-                            searchPapers();
+    <>
 
-                        }
+     <div
+      className="section-title"
+      style={{
+       marginTop:40,
+       marginBottom:20,
+      }}
+     >
 
-                    }}
+      Search Results
 
-                    placeholder="Search papers..."
+     </div>
 
-                    style={{
+     <div className="search-results">
 
-                        flex: 1,
+      {
 
-                    }}
+       results.map((paper)=>(
 
-                />
+        <SearchResultCard
+         key={paper.id}
+         paper={paper}
+        />
 
-                <button
+       ))
 
-                    onClick={searchPapers}
+      }
 
-                >
+     </div>
 
-                    Search
+    </>
 
-                </button>
+   }
 
-            </div>
+   {
 
-            <hr />
+    !loading &&
+    semantic.length > 0 &&
 
-            <h2>
+    <>
 
-                Search Results
+     <div
+      className="section-title"
+      style={{
+       marginTop:40,
+       marginBottom:20,
+      }}
+     >
 
-            </h2>
+      AI Similar Papers
 
-            {
+     </div>
 
-                papers.map((paper) => (
+     <div className="search-results">
 
-                    <div
+      {
 
-                        key={paper.id}
+       semantic.map((paper)=>(
 
-                        className="card"
+        <SearchResultCard
+         key={paper.id}
+         paper={paper}
+        />
 
-                        style={{
+       ))
 
-                            marginBottom: 25,
+      }
 
-                        }}
+     </div>
 
-                    >
+    </>
 
-                        <h2>
+   }
 
-                            {paper.title}
+   {
 
-                        </h2>
+    !loading &&
+    results.length === 0 &&
+    semantic.length === 0 &&
 
-                        <p>
+    <div
+     className="glass-card"
+     style={{
+      marginTop:30,
+     }}
+    >
 
-                            <b>📅 Year:</b>{" "}
+     <h3>
 
-                            {paper.year}
+      Semantic Discovery
 
-                        </p>
+     </h3>
 
-                        <p>
+     <p>
 
-                            <b>⭐ Citations:</b>{" "}
+      Search millions of research papers,
+      discover related work,
+      explore citations,
+      and uncover hidden connections.
 
-                            {paper.citations}
+     </p>
 
-                        </p>
+    </div>
 
-                        <p>
+   }
 
-                            <b>🏛 Venue:</b>{" "}
+  </div>
 
-                            {paper.venue}
-
-                        </p>
-
-                        <p>
-
-                            <b>👨 Authors:</b>{" "}
-
-                            {
-
-                                paper.authors.length
-
-                                    ?
-
-                                    paper.authors.join(", ")
-
-                                    :
-
-                                    "Unknown"
-
-                            }
-
-                        </p>
-
-                        <p>
-
-                            <b>👥 Author Count:</b>{" "}
-
-                            {paper.authors_count}
-
-                        </p>
-
-                        <p>
-
-                            <b>📄 Type:</b>{" "}
-
-                            {paper.type}
-
-                        </p>
-
-                        <p>
-
-                            <b>🌍 Language:</b>{" "}
-
-                            {paper.language}
-
-                        </p>
-
-                        <p>
-
-                            <b>🔬 Concepts:</b>{" "}
-
-                            {
-
-                                paper.concepts.length
-
-                                    ?
-
-                                    paper.concepts.join(", ")
-
-                                    :
-
-                                    "N/A"
-
-                            }
-
-                        </p>
-
-                        <p>
-
-                            <b>📚 References:</b>{" "}
-
-                            {paper.referenced_works}
-
-                        </p>
-
-                        <p>
-
-                            <b>🧠 Relevance:</b>{" "}
-
-                            {
-
-                                Math.round(
-
-                                    paper.relevance_score
-
-                                )
-
-                            }
-
-                        </p>
-
-                        <p>
-
-                            <b>🌍 Open Access:</b>{" "}
-
-                            {
-
-                                paper.open_access
-
-                                    ?
-
-                                    "Yes"
-
-                                    :
-
-                                    "No"
-
-                            }
-
-                        </p>
-
-                        {
-
-                            paper.doi && (
-
-                                <a
-
-                                    href={paper.doi}
-
-                                    target="_blank"
-
-                                    rel="noreferrer"
-
-                                >
-
-                                    📖 Open Paper
-
-                                </a>
-
-                            )
-
-                        }
-
-                    </div>
-
-                ))
-
-            }
-
-            <hr />
-
-            <h2>
-
-                🤖 AI Similar Papers
-
-            </h2>
-
-            {
-
-                semantic.length === 0
-
-                ?
-
-                <p>
-
-                    No semantic matches yet.
-
-                </p>
-
-                :
-
-                semantic.map((paper) => (
-
-                    <div
-
-                        key={paper.id}
-
-                        className="card"
-
-                        style={{
-
-                            marginBottom: 20,
-
-                        }}
-
-                    >
-
-                        <h3>
-
-                            {paper.title}
-
-                        </h3>
-
-                        <p>
-
-                            <b>🏛 Venue:</b>{" "}
-
-                            {paper.venue}
-
-                        </p>
-
-                        <p>
-
-                            <b>⭐ Citations:</b>{" "}
-
-                            {paper.citations}
-
-                        </p>
-
-                        <p>
-
-                            <b>📅 Year:</b>{" "}
-
-                            {paper.year}
-
-                        </p>
-
-                    </div>
-
-                ))
-
-            }
-
-        </div>
-
-    );
+ );
 
 }
