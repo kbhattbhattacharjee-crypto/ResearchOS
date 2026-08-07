@@ -33,5 +33,50 @@
         "query": "Machine Learning",
         "results": 10,
         "time": "2026-07-26T01:09:49.859157"
+    },
+    {
+        "query": "Jim c",
+        "results": 10,
+        "time": "2026-08-03T23:46:50.356881"
+    },
+    {
+        "query": "Jim c",
+        "results": 10,
+        "time": "2026-08-03T23:46:54.793173"
+    },
+    {
+        "query": "Labonya Das Gupta",
+        "results": 1,
+        "time": "2026-08-03T23:55:56.798534"
+    },
+    {
+        "query": "Machine Learning",
+        "results": 10,
+        "time": "2026-08-03T23:57:01.988441"
+    },
+    {
+        "query": "Machine Learning",
+        "results": 10,
+        "time": "2026-08-03T23:57:04.975907"
+    },
+    {
+        "query": "Machine Learning",
+        "results": 10,
+        "time": "2026-08-03T23:57:07.289748"
+    },
+    {
+        "query": "Financial market fall",
+        "results": 10,
+        "time": "2026-08-03T23:57:09.320597"
+    },
+    {
+        "query": "Financial market fall",
+        "results": 10,
+        "time": "2026-08-03T23:57:11.396384"
+    },
+    {
+        "query": "Financial market fall",
+        "results": 10,
+        "time": "2026-08-03T23:57:12.460270"
     }
 ]
